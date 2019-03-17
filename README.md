@@ -1,6 +1,4 @@
-# Azure Proxy
-
-
+# Azure Tables
 
 ## Authorization
 
@@ -10,4 +8,4 @@ Bearer token.  Just ask for it
 
 Swagger UI:
 
-https://azureproxy.azurewebsites.us/docs
+https://az-table.azurewebsites.us/docs
