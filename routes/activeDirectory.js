@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const checkToken = require('../token')
-const refreshToken = require('../refresh')
 const fetch = require('node-fetch')
+const azure = require('azure-storage')
+const tableService = azure.createTableService()
 
 global.Headers = fetch.Headers
 
@@ -11,7 +12,7 @@ router.get('/allEvents',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
-            // get all events from az table here
+            // get all events from table here
         } else res.status(403).end()
     }
 )

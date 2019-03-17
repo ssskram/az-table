@@ -28,15 +28,8 @@ app.use(cors())
 app.use(require('morgan')('combined'))
 
 // routes
-app.use("/appservices", require('./routes/appServices'))
-app.use("/clientApps", require('./routes/clientApplications'))``
-app.use("/apiApps", require('./routes/apiApplications'))
-app.use("/serverlessApps", require('./routes/serverlessApplications'))
-app.use("/deployments", require('./routes/deployments'))
-app.use("/metrics", require('./routes/metrics'))
-app.use("/config", require('./routes/config'))
-app.use("/provision", require('./routes/provision'))
-``
+app.use("/activeDirectory", require('./routes/activeDirectory'))
+
 // production error handler
 if (app.get('env') === 'production') {
   app.use(function (err, req, res, next) {
