@@ -12,7 +12,14 @@ router.get('/allEvents',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
-            // get all events from table here
+            const query = new azure.TableQuery()
+                .top(5)
+                .where('PartitionKey eq ?', 'part2')
+            tableService.queryEntities('adEvents', query, null, function (error, result, response) {
+                if (!error) {
+                    res.status(200).send(result.entries)
+                } else res.status(500).send()
+            });
         } else res.status(403).end()
     }
 )
@@ -22,7 +29,21 @@ router.post('/newEvent',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
-            // post new event to table here
+            const entGen = azure.TableUtilities.entityGenerator
+            const entity = {
+                PartitionKey: entGen.String('part2'),
+                RowKey: entGen.String('row1'),
+                boolValueTrue: entGen.Boolean(true),
+                boolValueFalse: entGen.Boolean(false),
+                intValue: entGen.Int32(42),
+                dateValue: entGen.DateTime(new Date(Date.UTC(2011, 10, 25))),
+                complexDateValue: entGen.DateTime(new Date(Date.UTC(2013, 02, 16, 01, 46, 20)))
+            }
+            tableService.insertEntity('adEvents', entity, function (error, result, response) {
+                if (!error) {
+                    res.status(200).send()
+                } else res.status(500).send()
+            });
         } else res.status(403).end()
     }
 )
