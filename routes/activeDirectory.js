@@ -42,7 +42,7 @@ router.post('/newEvent',
                 latitude: req.body.latitude,
                 longitude: req.body.longitude
             }
-            tableService.insertEntity('adEvents', entity, function (error, result, response) {
+            tableService.insertOrReplaceEntity('adEvents', entity, function (error, result, response) {
                 if (!error) {
                     res.status(200).send()
                 } else res.status(500).send()
