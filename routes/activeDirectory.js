@@ -31,13 +31,17 @@ router.post('/newEvent',
         if (valid == true) {
             const entGen = azure.TableUtilities.entityGenerator
             const entity = {
-                PartitionKey: entGen.String('part2'),
-                RowKey: entGen.String('row1'),
-                boolValueTrue: entGen.Boolean(true),
-                boolValueFalse: entGen.Boolean(false),
-                intValue: entGen.Int32(42),
-                dateValue: entGen.DateTime(new Date(Date.UTC(2011, 10, 25))),
-                complexDateValue: entGen.DateTime(new Date(Date.UTC(2013, 02, 16, 01, 46, 20)))
+                PartitionKey: entGen.String(req.body.userName),
+                RowKey: entGen.String(req.body.id),
+                eventTime: req.body.time,
+                userEmail: req.body.userEmail,
+                appName: req.body.appName,
+                ipAddress: req.body.ipAddress,
+                city: req.body.city,
+                state: req.body.state,
+                country: req.body.country,
+                latitude: req.body.latitude,
+                longitude: req.body.longitude
             }
             tableService.insertEntity('adEvents', entity, function (error, result, response) {
                 if (!error) {
