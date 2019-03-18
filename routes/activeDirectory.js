@@ -4,7 +4,8 @@ const checkToken = require('../token')
 const fetch = require('node-fetch')
 const azure = require('azure-storage')
 const tableService = azure.createTableService()
-
+const dt = require('node-json-transform').DataTransform
+const models = require('../models/activeDirectory')
 global.Headers = fetch.Headers
 
 // get events
@@ -13,11 +14,9 @@ router.get('/allEvents',
         const valid = (checkToken(req.token))
         if (valid == true) {
             const query = new azure.TableQuery()
-                .top(5)
-                .where('PartitionKey eq ?', 'part2')
             tableService.queryEntities('adEvents', query, null, function (error, result, response) {
                 if (!error) {
-                    res.status(200).send(result.entries)
+                    res.status(200).send(dt(result, models.event).transform())
                 } else res.status(500).send()
             });
         } else res.status(403).end()
