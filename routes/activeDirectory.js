@@ -13,13 +13,29 @@ router.get('/riskEvents',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
+            const events = []
             const query = new azure.TableQuery()
                 .where('state ne ?', 'Pennsylvania')
-            tableService.queryEntities('adEvents', query, null, function (error, result, response) {
-                if (!error) {
-                    res.status(200).send(dt(result, models.event).transform())
-                } else res.status(500).send()
+            await callAPI(null).then(() => {
+                res.status(200).send(events)
             })
+            async function callAPI(page) {
+                const response = await new Promise(async function (resolve, reject) {
+                    await tableService.queryEntities('adEvents', query, page, async (error, result, response) => {
+                        if (!error) {
+                            resolve(result)
+                        } else {
+                            res.status(500).send()
+                            reject(error)
+                        }
+                    })
+                })
+                await events.push(...dt(response, models.event).transform())
+                if (response.continuationToken) {
+                    await callAPI(response.continuationToken)
+                } else return
+            }
+
         } else res.status(403).end()
     }
 )
