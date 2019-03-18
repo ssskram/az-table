@@ -4,7 +4,7 @@ const event = {
     item: {
         userName: 'PartitionKey._',
         id: 'RowKey._',
-        time: 'time._',
+        time: 'eventTime._',
         userEmail: 'userEmail._',
         appName: 'appName._',
         ipAddress: 'ipAddress._',
