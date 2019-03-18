@@ -9,16 +9,17 @@ const models = require('../models/activeDirectory')
 global.Headers = fetch.Headers
 
 // get events
-router.get('/allEvents',
+router.get('/internationalEvents',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
             const query = new azure.TableQuery()
+                .where('country ne ?', 'US')
             tableService.queryEntities('adEvents', query, null, function (error, result, response) {
                 if (!error) {
                     res.status(200).send(dt(result, models.event).transform())
                 } else res.status(500).send()
-            });
+            })
         } else res.status(403).end()
     }
 )
