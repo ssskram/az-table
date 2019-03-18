@@ -8,13 +8,13 @@ const dt = require('node-json-transform').DataTransform
 const models = require('../models/activeDirectory')
 global.Headers = fetch.Headers
 
-// get events
-router.get('/internationalEvents',
+// get events generated from outside PA
+router.get('/riskEvents',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
             const query = new azure.TableQuery()
-                .where('country ne ?', 'US')
+                .where('state ne ?', 'Pennsylvania')
             tableService.queryEntities('adEvents', query, null, function (error, result, response) {
                 if (!error) {
                     res.status(200).send(dt(result, models.event).transform())
