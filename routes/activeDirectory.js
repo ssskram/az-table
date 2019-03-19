@@ -3,6 +3,8 @@ const router = express.Router()
 const checkToken = require('../token')
 const fetch = require('node-fetch')
 const dt = require('node-json-transform').DataTransform
+const azure = require('azure-storage')
+const tableService = azure.createTableService()
 const models = require('../models/activeDirectory')
 global.Headers = fetch.Headers
 
