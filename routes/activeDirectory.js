@@ -46,22 +46,18 @@ router.post('/newEvent',
         const valid = (checkToken(req.token))
         if (valid == true) {
             const entGen = azure.TableUtilities.entityGenerator
-            try {
-                const entity = {
-                    PartitionKey: entGen.String(req.body.userName),
-                    RowKey: entGen.String(req.body.id),
-                    eventTime: req.body.time,
-                    userEmail: req.body.userEmail,
-                    appName: req.body.appName,
-                    ipAddress: req.body.ipAddress,
-                    city: req.body.city,
-                    state: req.body.state,
-                    country: req.body.country,
-                    latitude: req.body.latitude,
-                    longitude: req.body.longitude
-                }
-            } catch (err) {
-                console.log(err)
+            const entity = {
+                PartitionKey: entGen.String(req.body.userName),
+                RowKey: entGen.String(req.body.id),
+                eventTime: req.body.time,
+                userEmail: req.body.userEmail,
+                appName: req.body.appName,
+                ipAddress: req.body.ipAddress,
+                city: req.body.city,
+                state: req.body.state,
+                country: req.body.country,
+                latitude: req.body.latitude,
+                longitude: req.body.longitude
             }
             tableService.insertOrReplaceEntity('adEvents', entity, function (error, result, response) {
                 if (!error) {
