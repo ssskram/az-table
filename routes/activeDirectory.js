@@ -46,23 +46,30 @@ router.post('/newEvent',
         const valid = (checkToken(req.token))
         if (valid == true) {
             const entGen = azure.TableUtilities.entityGenerator
-            const entity = {
-                PartitionKey: entGen.String(req.body.userName),
-                RowKey: entGen.String(req.body.id),
-                eventTime: req.body.time,
-                userEmail: req.body.userEmail,
-                appName: req.body.appName,
-                ipAddress: req.body.ipAddress,
-                city: req.body.city,
-                state: req.body.state,
-                country: req.body.country,
-                latitude: req.body.latitude,
-                longitude: req.body.longitude
+            try {
+                const entity = {
+                    PartitionKey: entGen.String(req.body.userName),
+                    RowKey: entGen.String(req.body.id),
+                    eventTime: req.body.time,
+                    userEmail: req.body.userEmail,
+                    appName: req.body.appName,
+                    ipAddress: req.body.ipAddress,
+                    city: req.body.city,
+                    state: req.body.state,
+                    country: req.body.country,
+                    latitude: req.body.latitude,
+                    longitude: req.body.longitude
+                }
+            } catch (err) {
+                console.log(err)
             }
             tableService.insertOrReplaceEntity('adEvents', entity, function (error, result, response) {
                 if (!error) {
                     res.status(200).send()
-                } else res.status(500).send()
+                } else {
+                    console.log(error)
+                    res.status(500).send(error)
+                }
             });
         } else res.status(403).end()
     }
