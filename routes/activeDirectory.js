@@ -25,6 +25,7 @@ router.get('/riskEvents',
                         if (!error) {
                             resolve(result)
                         } else {
+                            console.log(error)
                             res.status(500).send()
                             reject(error)
                         }
