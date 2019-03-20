@@ -66,7 +66,7 @@ router.get('/toDelete',
                         }
                     })
                 })
-                await events.push(...dt(response, models.event).transform())
+                await events.push(...response)
                 if (response.continuationToken) {
                     await callAPI(response.continuationToken)
                 } else return
