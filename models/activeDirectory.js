@@ -16,6 +16,16 @@ const event = {
     }
 }
 
+const toDelete = {
+    list: 'entries',
+    item: {
+        PartitionKey: 'PartitionKey',
+        RowKey: 'RowKey',
+        eventTime: 'eventTime'
+    }
+}
+
 module.exports = {
-    event
+    event,
+    toDelete
 }
