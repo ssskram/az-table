@@ -5,7 +5,6 @@ const fetch = require('node-fetch')
 const dt = require('node-json-transform').DataTransform
 const azure = require('azure-storage')
 const tableService = azure.createTableService()
-var QueryComparisons = azure.TableUtilities.QueryComparisons
 const models = require('../models/activeDirectory')
 global.Headers = fetch.Headers
 
@@ -50,9 +49,9 @@ router.get('/toDelete',
             const events = []
             const date = new Date
             await date.setHours(date.getHours() - 48)
-            const query = new azure.TableQuery().where('Timestamp le ?', date)
+            const query = new azure.TableQuery()
+                .where('Timestamp le ?', date)
             await callAPI(null).then(() => {
-                console.log(events.length)
                 res.status(200).send(events)
             })
             async function callAPI(page) {
