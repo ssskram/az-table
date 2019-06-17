@@ -1,21 +1,136 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "title": "Azure Tables",
-        "description": "Proxy for Azure table storage",
-        "version": "1.0.0"
-    },
-    "host": "az-tables.azurewebsites.us",
-    "schemes": [
-        "https"
-    ],
-    "securityDefinitions": {
-        "Bearer": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
-        }
-    },
-    "paths": {
+  "swagger": "2.0",
+  "info": {
+    "title": "Azure Tables",
+    "description": "Proxy for Azure table storage",
+    "version": "1.0.0"
+  },
+  "host": "az-tables.azurewebsites.us",
+  "schemes": ["https"],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
     }
+  },
+  "paths": {
+    "/activeDirectory/riskEvents": {
+      "get": {
+        "tags": ["Active Directory"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "48 hours of risk events",
+        "description": "Returns 48 hours of succesful logins from outside of PA",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "An array of login events",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "userName": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "userEmail": {
+                    "type": "string"
+                  },
+                  "appName": {
+                    "type": "string"
+                  },
+                  "ipAddress": {
+                    "type": "string"
+                  },
+                  "city": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "latitude": {
+                    "type": "float"
+                  },
+                  "longitude": {
+                    "type": "float"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/activeDirectory/toDelete": {
+      "get": {
+        "tags": ["Active Directory"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Events older than  48 hours",
+        "description": "Returns all risk events older than 48 hours",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "An array of login events",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "PartitionKey": {
+                    "type": "string"
+                  },
+                  "RowKey": {
+                    "type": "string"
+                  },
+                  "eventTime": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
